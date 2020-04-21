@@ -3,6 +3,8 @@
 #include "host/wasi/wasimodule.h"
 #include "support/log.h"
 
+#include <time.h>
+
 namespace SSVM {
 namespace VM {
 
@@ -119,6 +121,8 @@ VM::runWasmFile(const AST::Module &Module, const std::string &Func,
   if (auto Res = ValidatorEngine.validate(Module); !Res) {
     return Unexpect(Res);
   }
+  struct timespec requestStart, requestEnd;
+  clock_gettime(CLOCK_REALTIME, &requestStart);
   if (auto Res = InterpreterEngine.instantiateModule(StoreRef, Module); !Res) {
     return Unexpect(Res);
   }
@@ -127,6 +131,11 @@ VM::runWasmFile(const AST::Module &Module, const std::string &Func,
     Log::loggingError(ErrCode::FuncNotFound);
     return Unexpect(ErrCode::FuncNotFound);
   }
+  clock_gettime(CLOCK_REALTIME, &requestEnd);
+  double accum = ( requestEnd.tv_sec - requestStart.tv_sec )
+	  + ( requestEnd.tv_nsec - requestStart.tv_nsec )
+	  / 1E9;
+  printf("Instantiation time: %1fs", accum);
   if (auto Res = InterpreterEngine.invoke(StoreRef, FuncExp.find(Func)->second,
                                           Params)) {
     return *Res;
