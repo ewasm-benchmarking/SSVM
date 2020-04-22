@@ -135,7 +135,7 @@ VM::runWasmFile(const AST::Module &Module, const std::string &Func,
   double accum = ( requestEnd.tv_sec - requestStart.tv_sec )
 	  + ( requestEnd.tv_nsec - requestStart.tv_nsec )
 	  / 1E9;
-  printf("Instantiation time: %1fs", accum);
+  printf("Instantiation time: %1fs\n", accum);
   if (auto Res = InterpreterEngine.invoke(StoreRef, FuncExp.find(Func)->second,
                                           Params)) {
     return *Res;
