@@ -112,11 +112,11 @@ Interpreter::runFunction(Runtime::StoreManager &StoreMgr,
     LOG(DEBUG) << std::endl
                << " ====================  Statistics  ===================="
                << std::endl
-               << " Total execution time: " << ExecTime + HostFuncTime << " us"
+               << " Total execution time: " << ExecTime + HostFuncTime << "us"
                << std::endl
-               << " Wasm instructions execution time: " << ExecTime << " us"
+               << " Wasm instructions execution time: " << ExecTime << "us"
                << std::endl
-               << " Host functions execution time: " << HostFuncTime << " us"
+               << " Host functions execution time: " << HostFuncTime << "us"
                << std::endl
                << " Executed wasm instructions count: "
                << Measure->getInstrCnt() << std::endl
